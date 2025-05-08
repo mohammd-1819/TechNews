@@ -40,7 +40,6 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, default='user', unique=True, verbose_name='username')
     email = models.EmailField(verbose_name="email", default='-', max_length=255)
     fullname = models.CharField(max_length=255, verbose_name='fullname')
-    is_job_owner = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False, verbose_name='admin')
 
