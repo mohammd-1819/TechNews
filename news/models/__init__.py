@@ -1,5 +1,5 @@
 from .tag_model import Tag
-from .news import News
+from .news_model import News
 
 __all__ = [
     'Tag', 'News'
