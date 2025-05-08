@@ -1,5 +1,5 @@
 from rest_framework.pagination import PageNumberPagination
-from Job_Portal.settings import base
+from TechNews.settings import base
 
 
 class Pagination(PageNumberPagination):
