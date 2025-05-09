@@ -9,6 +9,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
         django_get_or_create = ('username',)
+        skip_postgeneration_save = True
 
     username = factory.Sequence(lambda n: f"user_{n}")
 
@@ -51,6 +52,10 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class AdminFactory(UserFactory):
+    class Meta:
+        model = User
+        skip_postgeneration_save = True
+
     username = factory.Sequence(lambda n: f"admin_{n}")
 
     @factory.post_generation
