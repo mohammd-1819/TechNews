@@ -26,7 +26,7 @@ from news.filters import NewsFilter
 class NewsListView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = NewsSerializer
-    queryset = News.objects.all()
+    queryset = News.objects.all().order_by('-created_at')
     pagination_class = Pagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = NewsFilter
