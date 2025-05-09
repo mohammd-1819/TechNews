@@ -1,6 +1,10 @@
 from rest_framework.pagination import PageNumberPagination
-from TechNews.settings import base
 
 
 class Pagination(PageNumberPagination):
-    page_size = getattr(base, 'PAGINATION_PAGE_SIZE', 5)
+    """
+    Standard pagination settings for API views.
+    """
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
