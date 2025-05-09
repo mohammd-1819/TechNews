@@ -76,23 +76,6 @@ class UserProfileView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class UserDetailView(APIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
-
-    @extend_schema(
-        tags=['User'],
-        summary='User Details',
-
-    )
-    def get(self, request):
-        try:
-            serializer = UserSerializer(instance=request.user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
-            return Response({"error": 'User Not Found'}, status=status.HTTP_404_NOT_FOUND)
-
-
 class UpdateProfileView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer

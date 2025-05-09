@@ -69,13 +69,13 @@ class TestUserProfileEndpoint:
         assert response.data['email'] == 'details@example.com'
         assert response.data['fullname'] == 'Detail User'
 
-    def test_admin_user_profile_data(self, api_client, user_factory):
+    def test_admin_user_profile_data(self, api_client, admin_factory):
         # arrange
-        admin_user = user_factory(
+        admin_user = admin_factory(
             username='adminuser',
             email='admin@example.com',
             fullname='Admin User',
-            is_superuser=True
+
         )
 
         # دریافت توکن JWT
