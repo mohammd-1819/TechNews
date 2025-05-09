@@ -1,4 +1,3 @@
-# فرض می‌کنم در فایل filters.py
 from django.db.models import Q
 from django_filters import rest_framework as filters
 from news.models.news_model import News
