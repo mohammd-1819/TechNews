@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
 from news.filters import NewsFilter
+from rest_framework.response import Response
 
 
 class NewsListView(ListAPIView):
@@ -28,7 +29,7 @@ class NewsListView(ListAPIView):
     @extend_schema(
         tags=['News'],
         operation_id='list_news',
-        summary='List all news articles',
+        summary='List all news articles from database',
         description='''
         This endpoint retrieves a paginated list of all news articles with filtering capabilities.
 
