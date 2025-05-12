@@ -1,0 +1,93 @@
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_cont
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tech_news
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  web:
+    build:
+      context: .
+    container_name: django_cont
+    command: >
+      sh -c "while ! nc -z db 5432; do
+             echo 'Waiting for PostgreSQL...';
+             sleep 1;
+             done;
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres:admin@db:5432/tech_news
+      POSTGRES_DB: tech_news
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      DB_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cont
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  celery:
+    build:
+      context: .
+    container_name: celery_worker
+    command: celery -A TechNews worker -l info
+    depends_on:
+      - db
+      - redis
+      - web
+    environment:
+      DATABASE_URL: postgres://postgres:admin@db:5432/tech_news
+      POSTGRES_DB: tech_news
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      DB_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes:
+      - .:/app
+
+  celery-beat:
+    build:
+      context: .
+    container_name: celery_beat
+    command: celery -A TechNews beat -l info
+    depends_on:
+      - db
+      - redis
+      - web
+    environment:
+      DATABASE_URL: postgres://postgres:admin@db:5432/tech_news
+      POSTGRES_DB: tech_news
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      DB_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:
+  redis_data:
