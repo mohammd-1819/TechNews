@@ -171,6 +171,6 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'scrape-news-every-hour': {
         'task': 'news.tasks.scrape_news_task',
-        'schedule': 30,  # Run every hour (in seconds)
+        'schedule': 30,
     },
 }
